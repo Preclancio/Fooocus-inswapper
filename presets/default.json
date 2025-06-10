@@ -1,5 +1,5 @@
 {
-    "default_model": "juggernautXL_v8Rundiffusion.safetensors",
+    "default_model": "bgl_xl1.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
     "default_loras": [
@@ -33,7 +33,7 @@
     "default_sample_sharpness": 2.0,
     "default_sampler": "dpmpp_2m_sde_gpu",
     "default_scheduler": "karras",
-    "default_performance": "Speed",
+    "default_performance": "Hyper-SD",
     "default_prompt": "",
     "default_prompt_negative": "",
     "default_styles": [
@@ -41,14 +41,19 @@
         "Fooocus Enhance",
         "Fooocus Sharp"
     ],
-    "default_aspect_ratio": "1152*896",
+    "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "juggernautXL_v8Rundiffusion.safetensors": "https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/juggernautXL_v8Rundiffusion.safetensors"
+        "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors",
+        "bgl_xl2.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl2.safetensors",
+        "bgLst_v16.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgLst_v16.safetensors"
+        
     },
     "embeddings_downloads": {},
     "lora_downloads": {
-        "sd_xl_offset_example-lora_1.0.safetensors": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
+        "sd_xl_offset_example-lora_1.0.safetensors": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors",
+        "add-detail-xl.safetensors":"https://huggingface.co/LyliaEngine/add-detail-xl/resolve/main/add-detail-xl.safetensors",
+        "sdxl_hyper_sd_4step_lora.safetensors":"https://huggingface.co/mashb1t/misc/resolve/main/sdxl_hyper_sd_4step_lora.safetensors"
     },
     "previous_default_models": [
         "juggernautXL_version8Rundiffusion.safetensors",
