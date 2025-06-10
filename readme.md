@@ -123,7 +123,7 @@ If you change the LoRAs or their weights:
 
 | Colab | Info
 | --- | --- |
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Preclancio/Fooocus-inswapper/blob/main/fooocus_colab.ipynb) | Fooocus Official
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Preclancio/Fooocus-inswapper/blob/main/fooocus_colab.ipynb) | Fooocus Official
 
 ## Issues
 
