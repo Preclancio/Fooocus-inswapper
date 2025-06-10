@@ -1,5 +1,5 @@
 #!/bin/bash
-
+pip install "pip<24"
 # Clone the repository
 git clone https://github.com/haofanwang/inswapper.git
 cd inswapper
@@ -27,9 +27,11 @@ cp -r inswapper/CodeFormer/CodeFormer/facelib /usr/local/lib/python*/dist-packag
 mkdir -p inswapper/checkpoints
 
 # Download the ONNX model
-wget https://github.com/facefusion/facefusion-assets/releases/download/models/inswapper_128.onnx -O inswapper/checkpoints/inswapper_128.onnx
+gdown --id 1krOLgjW2tAPaqV-Bw4YALz0xT5zlb5HF -O inswapper/checkpoints/inswapper_128.onnx
 
 # Setup InstantID
 mkdir -p InstantID/models/antelopev2
-wget -O InstantID/models/antelopev2/antelopev2.zip 'https://drive.google.com/uc?export=download&id=18wEUfMNohBJ4K3Ly5wpTejPfDzp-8fI8'
-unzip InstantID/models/antelopev2/antelopev2.zip -d InstantID/models/antelopev2
+# Descargar el archivo ZIP con gdown (sin usar --id porque está deprecated)
+gdown "https://drive.google.com/uc?id=18wEUfMNohBJ4K3Ly5wpTejPfDzp-8fI8" -O /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip
+unzip /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip -d /content/Fooocus-inswapper/InstantID/models/antelopev2/
+
