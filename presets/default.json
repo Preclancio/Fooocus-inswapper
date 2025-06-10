@@ -1,5 +1,5 @@
 {
-    "default_model": "bigloveXL_25.safetensors",
+    "default_model": "bigloveXL_v25.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
     "default_loras": [
@@ -44,7 +44,8 @@
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "bigloveXL_25.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl25.safetensors?download=true"
+        "bigloveXL_v25.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl25.safetensors?download=true",
+        "bigLustXL_v16":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl25.safetensors?download=true"
     },
     "embeddings_downloads": {},
     "lora_downloads": {
