@@ -45,7 +45,6 @@
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
         "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors",
-        "bgl_xl2.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl2.safetensors",
         "bgLst_v16.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgLst_v16.safetensors"
         
     },
@@ -53,7 +52,8 @@
     "lora_downloads": {
         "sd_xl_offset_example-lora_1.0.safetensors": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors",
         "add-detail-xl.safetensors":"https://huggingface.co/LyliaEngine/add-detail-xl/resolve/main/add-detail-xl.safetensors",
-        "sdxl_hyper_sd_4step_lora.safetensors":"https://huggingface.co/mashb1t/misc/resolve/main/sdxl_hyper_sd_4step_lora.safetensors"
+        "sdxl_hyper_sd_4step_lora.safetensors":"https://huggingface.co/mashb1t/misc/resolve/main/sdxl_hyper_sd_4step_lora.safetensors",
+        
     },
     "previous_default_models": [
         "juggernautXL_version8Rundiffusion.safetensors",
