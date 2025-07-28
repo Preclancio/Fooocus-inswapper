@@ -422,107 +422,107 @@ with shared.gradio_root:
                             inswapper_target_image_indicies = gr.Text(label = "Target Image Index", info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)", value="0")
                         with gr.Column():
                             inswapper_source_image = grh.Image(label='Source Face Image', source='upload', type='numpy')                        
-                        with gr.Row():
-                                        with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
-                                            with gr.Row():
-                                                with gr.Column():
-                                                    civitai_url = gr.Textbox(
-                                                        label="Enlace de descarga",
-                                                        placeholder="https://civitai.com/api/download/models/... o Google Drive",
-                                                        info="Pega aquí el enlace directo de Civitai o Google Drive."
-                                                    )
-                                                    output_filename = gr.Textbox(
-                                                        label="Nombre del archivo de salida (sin .safetensors)",
-                                                        placeholder="Big_Love",
-                                                        info="No incluyas la extensión .safetensors. Espacios se convertirán en '_' y saltos de línea en ','."
-                                                    )
-                                                    model_type = gr.Radio(
-                                                        label="Tipo de modelo",
-                                                        choices=["checkpoints", "loras"],
-                                                        value="checkpoints",
-                                                        info="Elige si es un modelo base (checkpoints) o un LoRA."
-                                                    )
-                                                    download_button = gr.Button("Descargar modelo")
-                                                    download_status = gr.Textbox(label="Progreso", interactive=False, lines=5, max_lines=10)
+            with gr.Row():
+                            with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
+                                with gr.Row():
+                                    with gr.Column():
+                                        civitai_url = gr.Textbox(
+                                            label="Enlace de descarga",
+                                            placeholder="https://civitai.com/api/download/models/... o Google Drive",
+                                            info="Pega aquí el enlace directo de Civitai o Google Drive."
+                                        )
+                                        output_filename = gr.Textbox(
+                                            label="Nombre del archivo de salida (sin .safetensors)",
+                                            placeholder="Big_Love",
+                                            info="No incluyas la extensión .safetensors. Espacios se convertirán en '_' y saltos de línea en ','."
+                                        )
+                                        model_type = gr.Radio(
+                                            label="Tipo de modelo",
+                                            choices=["checkpoints", "loras"],
+                                            value="checkpoints",
+                                            info="Elige si es un modelo base (checkpoints) o un LoRA."
+                                        )
+                                        download_button = gr.Button("Descargar modelo")
+                                        download_status = gr.Textbox(label="Progreso", interactive=False, lines=5, max_lines=10)
 
-                                            def descargar_modelo(enlace, nombre_archivo, tipo_modelo):
-                                                import subprocess
-                                                import os
-                                                import re
-                                                import shutil
+                                def descargar_modelo(enlace, nombre_archivo, tipo_modelo):
+                                    import subprocess
+                                    import os
+                                    import re
+                                    import shutil
 
-                                                def ensure_gdown():
-                                                    try:
-                                                        import gdown
-                                                    except ImportError:
-                                                        subprocess.call(["pip", "install", "gdown"])
+                                    def ensure_gdown():
+                                        try:
+                                            import gdown
+                                        except ImportError:
+                                            subprocess.call(["pip", "install", "gdown"])
 
-                                                # Normalizar nombre del archivo
-                                                nombre_archivo = nombre_archivo.replace(" ", "_").replace("\n", ",")
-                                                if not nombre_archivo.lower().endswith(".safetensors"):
-                                                    nombre_archivo += ".safetensors"
+                                    # Normalizar nombre del archivo
+                                    nombre_archivo = nombre_archivo.replace(" ", "_").replace("\n", ",")
+                                    if not nombre_archivo.lower().endswith(".safetensors"):
+                                        nombre_archivo += ".safetensors"
 
-                                                # Crear carpeta destino
-                                                folder = f"../Fooocus-inswapper/models/{tipo_modelo}"
-                                                os.makedirs(folder, exist_ok=True)
-                                                output_path = os.path.join(folder, nombre_archivo)
+                                    # Crear carpeta destino
+                                    folder = f"../Fooocus-inswapper/models/{tipo_modelo}"
+                                    os.makedirs(folder, exist_ok=True)
+                                    output_path = os.path.join(folder, nombre_archivo)
 
-                                                # Token para Civitai
-                                                token = "d70d3ec4bf5b37e236d40d6335f4ff9b"
+                                    # Token para Civitai
+                                    token = "d70d3ec4bf5b37e236d40d6335f4ff9b"
 
-                                                # Decidir el comando según el tipo de URL
-                                                if "drive.google.com" in enlace:
-                                                    ensure_gdown()
-                                                    match = re.search(r"/d/([a-zA-Z0-9_-]+)", enlace)
-                                                    if not match:
-                                                        match = re.search(r"id=([a-zA-Z0-9_-]+)", enlace)
-                                                    if not match:
-                                                        return "Enlace de Google Drive inválido."
+                                    # Decidir el comando según el tipo de URL
+                                    if "drive.google.com" in enlace:
+                                        ensure_gdown()
+                                        match = re.search(r"/d/([a-zA-Z0-9_-]+)", enlace)
+                                        if not match:
+                                            match = re.search(r"id=([a-zA-Z0-9_-]+)", enlace)
+                                        if not match:
+                                            return "Enlace de Google Drive inválido."
 
-                                                    file_id = match.group(1)
-                                                    cmd = ["gdown", "--no-cookies", "--id", file_id, "-O", output_path]
+                                        file_id = match.group(1)
+                                        cmd = ["gdown", "--no-cookies", "--id", file_id, "-O", output_path]
 
-                                                elif "civitai.com" in enlace:
-                                                    cmd = [
-                                                        "curl", "-L",
-                                                        "-H", f"Authorization: Bearer {token}",
-                                                        "-o", output_path,
-                                                        "--progress-bar",
-                                                        enlace
-                                                    ]
+                                    elif "civitai.com" in enlace:
+                                        cmd = [
+                                            "curl", "-L",
+                                            "-H", f"Authorization: Bearer {token}",
+                                            "-o", output_path,
+                                            "--progress-bar",
+                                            enlace
+                                        ]
 
-                                                elif "huggingface.co" in enlace:
-                                                    cmd = [
-                                                        "wget", "--content-disposition", "-O", output_path, enlace
-                                                    ]
+                                    elif "huggingface.co" in enlace:
+                                        cmd = [
+                                            "wget", "--content-disposition", "-O", output_path, enlace
+                                        ]
 
-                                                else:
-                                                    return "Enlace no reconocido: solo se permiten Civitai, Google Drive y Hugging Face."
+                                    else:
+                                        return "Enlace no reconocido: solo se permiten Civitai, Google Drive y Hugging Face."
 
-                                                try:
-                                                    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                                    try:
+                                        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
-                                                    while True:
-                                                        line = process.stdout.readline()
-                                                        if not line:
-                                                            break
-                                                        yield line.strip()
+                                        while True:
+                                            line = process.stdout.readline()
+                                            if not line:
+                                                break
+                                            yield line.strip()
 
-                                                    process.wait()
-                                                    if process.returncode == 0:
-                                                        yield f"Descarga completada: {output_path}"
-                                                    else:
-                                                        yield f"Error con código {process.returncode}"
-                                                except Exception as e:
-                                                    yield f"Excepción: {str(e)}"
+                                        process.wait()
+                                        if process.returncode == 0:
+                                            yield f"Descarga completada: {output_path}"
+                                        else:
+                                            yield f"Error con código {process.returncode}"
+                                    except Exception as e:
+                                        yield f"Excepción: {str(e)}"
 
 
-                                            download_button.click(
-                                                fn=descargar_modelo,
-                                                inputs=[civitai_url, output_filename, model_type],
-                                                outputs=[download_status],
-                                                show_progress=True
-                                            )
+                                download_button.click(
+                                    fn=descargar_modelo,
+                                    inputs=[civitai_url, output_filename, model_type],
+                                    outputs=[download_status],
+                                    show_progress=True
+                                )
 
             with gr.Row(visible=modules.config.default_enhance_checkbox) as enhance_input_panel:
                 with gr.Tabs():
