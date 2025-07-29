@@ -14,6 +14,7 @@ git clone https://huggingface.co/spaces/sczhou/CodeFormer
 cd ..
 
 # Install Python dependencies
+pip install onnxruntime-gpu
 pip install -r requirements_versions.txt
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
