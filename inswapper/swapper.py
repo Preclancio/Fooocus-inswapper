@@ -16,8 +16,8 @@ from typing import List, Union, Dict, Set, Tuple
 
 from modules.reactor.reactor_mask import apply_face_mask
 
-def getFaceSwapModel(model_path: str):
-    model = insightface.model_zoo.get_model(model_path)
+def getFaceSwapModel(model_path: str, providers):
+    model = insightface.model_zoo.get_model(model_path, providers=providers)
     return model
 
 
@@ -77,7 +77,7 @@ def process(source_img: Union[Image.Image, List],
     
     # load face_swapper
     model_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), model)
-    face_swapper = getFaceSwapModel(model_path)
+    face_swapper = getFaceSwapModel(model_path, providers)
     
     # read target image
     target_img = cv2.cvtColor(np.array(target_img), cv2.COLOR_RGB2BGR)
