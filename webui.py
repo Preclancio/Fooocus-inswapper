@@ -15,7 +15,7 @@ import modules.gradio_hijack as grh
 import modules.style_sorter as style_sorter
 import modules.meta_parser
 import modules.pm as pm
-import modules.instantid as instantid
+#import modules.instantid as instantid
 import args_manager
 import copy
 import launch
@@ -342,55 +342,55 @@ with shared.gradio_root:
                                 enhance_input_image = grh.Image(label='Use with Enhance, skips image generation', source='upload', type='numpy')
                                 gr.HTML('<a href="https://github.com/lllyasviel/Fooocus/discussions/3281" target="_blank">\U0001F4D4 Documentation</a>')
 
-                    with gr.TabItem(label="PhotoMaker") as photomaker_tab:
-                        with gr.Row():
-                            with gr.Column():
-                                photomaker_enabled = gr.Checkbox(label="Enabled", value=False)
-                                def handle_model(value):
-                                    if value is False:                                        
-                                        pm.unload_model()
-                                photomaker_enabled.change(fn=handle_model, inputs=[photomaker_enabled])
-                        with gr.Row():
-                            with gr.Column():
-                                def swap_to_gallery(images):
-                                    pil_images = []
-                                    for image in images:
-                                        print(f"image path: {image.name}")
-                                        pil_images.append(Image.open(image.name))                                        
-                                    return gr.update(value=pil_images, visible=True), gr.update(visible=True), gr.update(visible=False)
+                    # with gr.TabItem(label="PhotoMaker") as photomaker_tab:
+                    #     with gr.Row():
+                    #         with gr.Column():
+                    #             photomaker_enabled = gr.Checkbox(label="Enabled", value=False)
+                    #             def handle_model(value):
+                    #                 if value is False:                                        
+                    #                     pm.unload_model()
+                    #             photomaker_enabled.change(fn=handle_model, inputs=[photomaker_enabled])
+                    #     with gr.Row():
+                    #         with gr.Column():
+                    #             def swap_to_gallery(images):
+                    #                 pil_images = []
+                    #                 for image in images:
+                    #                     print(f"image path: {image.name}")
+                    #                     pil_images.append(Image.open(image.name))                                        
+                    #                 return gr.update(value=pil_images, visible=True), gr.update(visible=True), gr.update(visible=False)
 
-                                photomaker_images = gr.Files(label="Drag (Select) 1 or more photos of your face", file_types=["image"])
-                                photomaker_gallery_images = gr.Gallery(label="Source Face Images", columns=5, rows=1, height=200)
-                                photomaker_images.upload(fn=swap_to_gallery, inputs=photomaker_images, outputs=[photomaker_gallery_images, photomaker_images])
+                    #             photomaker_images = gr.Files(label="Drag (Select) 1 or more photos of your face", file_types=["image"])
+                    #             photomaker_gallery_images = gr.Gallery(label="Source Face Images", columns=5, rows=1, height=200)
+                    #             photomaker_images.upload(fn=swap_to_gallery, inputs=photomaker_images, outputs=[photomaker_gallery_images, photomaker_images])
 
-                    with gr.TabItem(label="InstantID") as instantid_tab:
-                        with gr.Row():
-                            with gr.Column():
-                                instantid_enabled = gr.Checkbox(label="Enabled", value=False)
-                                def handle_model(value):
-                                    if value is False:
-                                        instantid.unload_model()
-                                instantid_enabled.change(fn=handle_model, inputs=[instantid_enabled])
-                            with gr.Column():
-                                instantid_identitynet_strength_ratio = gr.Slider(
-                                    label="IdentityNet strength (for fidelity)",
-                                    minimum=0,
-                                    maximum=1.5,
-                                    step=0.05,
-                                    value=0.80,
-                                )
-                                instantid_adapter_strength_ratio = gr.Slider(
-                                    label="Image adapter strength (for detail)",
-                                    minimum=0,
-                                    maximum=1.5,
-                                    step=0.05,
-                                    value=0.80,
-                                )                                
-                        with gr.Row():
-                            with gr.Column():                            
-                                instantid_source_image_path = grh.Image(label='Source Face Image', source='upload', type='filepath')
-                            with gr.Column():
-                                instantid_pose_image_path = grh.Image(label='Source Pose Image', source='upload', type='pil', tool='sketch', brush_color="#FFFFFF", elem_id='instantid_inpaint_canvas')
+                    # with gr.TabItem(label="InstantID") as instantid_tab:
+                    #     with gr.Row():
+                    #         with gr.Column():
+                    #             instantid_enabled = gr.Checkbox(label="Enabled", value=False)
+                    #             def handle_model(value):
+                    #                 if value is False:
+                    #                     instantid.unload_model()
+                    #             instantid_enabled.change(fn=handle_model, inputs=[instantid_enabled])
+                    #         with gr.Column():
+                    #             instantid_identitynet_strength_ratio = gr.Slider(
+                    #                 label="IdentityNet strength (for fidelity)",
+                    #                 minimum=0,
+                    #                 maximum=1.5,
+                    #                 step=0.05,
+                    #                 value=0.80,
+                    #             )
+                    #             instantid_adapter_strength_ratio = gr.Slider(
+                    #                 label="Image adapter strength (for detail)",
+                    #                 minimum=0,
+                    #                 maximum=1.5,
+                    #                 step=0.05,
+                    #                 value=0.80,
+                    #             )                                
+                    #     with gr.Row():
+                    #         with gr.Column():                            
+                    #             instantid_source_image_path = grh.Image(label='Source Face Image', source='upload', type='filepath')
+                    #         with gr.Column():
+                    #             instantid_pose_image_path = grh.Image(label='Source Pose Image', source='upload', type='pil', tool='sketch', brush_color="#FFFFFF", elem_id='instantid_inpaint_canvas')
 
                     with gr.TabItem(label='Metadata') as metadata_tab:
                         with gr.Column():
@@ -853,8 +853,8 @@ with shared.gradio_root:
             ip_tab.select(lambda: 'ip', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
             desc_tab.select(lambda: 'desc', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
             enhance_tab.select(lambda: 'enhance', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
-            photomaker_tab.select(lambda: 'photomaker', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
-            instantid_tab.select(lambda: 'instantid', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
+            #photomaker_tab.select(lambda: 'photomaker', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
+            #instantid_tab.select(lambda: 'instantid', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
             metadata_tab.select(lambda: 'metadata', outputs=current_tab, queue=False, _js=down_js, show_progress=False)
             enhance_checkbox.change(lambda x: gr.update(visible=x), inputs=enhance_checkbox,
                                         outputs=enhance_input_panel, queue=False, show_progress=False, _js=switch_js)
@@ -1300,9 +1300,22 @@ with shared.gradio_root:
 
         ctrls += ip_ctrls
 
+        #ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies]
+                # Antes de definir 'ctrls', crea componentes ocultos para los placeholders
+        photomaker_enabled_placeholder = gr.Checkbox(visible=False, value=False)
+        photomaker_images_placeholder = gr.Image(visible=False)
+
+        instantid_enabled_placeholder = gr.Checkbox(visible=False, value=False)
+        instantid_source_placeholder = gr.Image(visible=False)
+        instantid_pose_placeholder = gr.Image(visible=False)
+        instantid_id_strength_placeholder = gr.Slider(visible=False, value=0.0)
+        instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
+
+        # Luego en tu lista ctrls:
         ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies]
-        ctrls += [photomaker_enabled, photomaker_images]
-        ctrls += [instantid_enabled, instantid_source_image_path, instantid_pose_image_path, instantid_identitynet_strength_ratio, instantid_adapter_strength_ratio]
+        ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
+        ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
+                instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
 
         ctrls += [debugging_dino, dino_erode_or_dilate, debugging_enhance_masks_checkbox,
                   enhance_input_image, enhance_checkbox, enhance_uov_method, enhance_uov_processing_order,
