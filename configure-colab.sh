@@ -1,6 +1,5 @@
 #!/bin/bash
 pip install "pip<24"
-pip install onnxruntime-gpu==1.18.1
 # Clone the repository
 #git clone https://github.com/haofanwang/inswapper.git
 cd inswapper
