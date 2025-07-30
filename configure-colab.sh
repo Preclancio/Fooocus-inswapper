@@ -1,5 +1,6 @@
 #!/bin/bash
 pip install "pip<24"
+pip install onnxruntime-gpu==1.18.1
 # Clone the repository
 git clone https://github.com/haofanwang/inswapper.git
 cd inswapper
@@ -14,7 +15,6 @@ git clone https://huggingface.co/spaces/sczhou/CodeFormer
 cd ..
 
 # Install Python dependencies
-# install onnxruntime-gpu
 pip install -r requirements_versions.txt
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
