@@ -70,7 +70,7 @@ def process(source_img: Union[Image.Image, List],
             target_indexes: str,
             model: str):
     # load machine default available providers
-    providers = onnxruntime.get_available_providers()
+    providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']
 
     # load face_analyser
     face_analyser = getFaceAnalyser(model, providers)
