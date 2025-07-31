@@ -30,8 +30,9 @@ mkdir -p inswapper/checkpoints
 gdown --id 1krOLgjW2tAPaqV-Bw4YALz0xT5zlb5HF -O inswapper/checkpoints/inswapper_128.onnx
 
 # Setup InstantID
-mkdir -p InstantID/models/antelopev2
+#mkdir -p InstantID/models/antelopev2
 # Descargar el archivo ZIP con gdown (sin usar --id porque está deprecated)
-gdown "https://drive.google.com/uc?id=18wEUfMNohBJ4K3Ly5wpTejPfDzp-8fI8" -O /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip
-unzip /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip -d /content/Fooocus-inswapper/InstantID/models/antelopev2/
-
+#gdown "https://drive.google.com/uc?id=18wEUfMNohBJ4K3Ly5wpTejPfDzp-8fI8" -O /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip
+#unzip /content/Fooocus-inswapper/InstantID/models/antelopev2/antelopev2.zip -d /content/Fooocus-inswapper/InstantID/models/antelopev2/
+rm -rf /content/Fooocus-inswapper/InstantID
+rm -rf /content/Fooocus-inswapper/photomaker
