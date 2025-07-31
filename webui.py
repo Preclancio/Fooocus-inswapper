@@ -14,7 +14,7 @@ import modules.flags as flags
 import modules.gradio_hijack as grh
 import modules.style_sorter as style_sorter
 import modules.meta_parser
-import modules.pm as pm
+#import modules.pm as pm
 #import modules.instantid as instantid
 import args_manager
 import copy
