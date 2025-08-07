@@ -418,10 +418,41 @@ with shared.gradio_root:
                     with gr.Row():
                         with gr.Column():
                             inswapper_enabled = gr.Checkbox(label="Enabled", value=False)
-                            inswapper_source_image_indicies = gr.Text(label="Source Image Index", info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)", value="0")
-                            inswapper_target_image_indicies = gr.Text(label = "Target Image Index", info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)", value="0")
+                            inswapper_source_image_indicies = gr.Textbox(
+                                label="Source Image Index",
+                                info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)",
+                                value="0"
+                            )
+                            inswapper_target_image_indicies = gr.Textbox(
+                                label="Target Image Index",
+                                info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)",
+                                value="0"
+                            )
+                            
+                            # Nuevo: activar CodeFormer
+                            codeformer_enabled = gr.Checkbox(
+                                label="Apply CodeFormer (Face Restore)", 
+                                value=False
+                            )
+
+                            #  Nuevo: slider para fidelity
+                            codeformer_fidelity = gr.Slider(
+                                label="CodeFormer Fidelity",
+                                minimum=0.0,
+                                maximum=1.0,
+                                value=0.5,
+                                step=0.05,
+                                interactive=True,
+                                info="0.0 = máxima restauración (más IA), 1.0 = máxima fidelidad al original"
+                            )
+
                         with gr.Column():
-                            inswapper_source_image = grh.Image(label='Source Face Image', source='upload', type='numpy')                        
+                            inswapper_source_image = gr.Image(
+                                label='Source Face Image', 
+                                source='upload', 
+                                type='numpy'
+                            )
+
             with gr.Row():
                             with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
                                 with gr.Row():
@@ -1312,7 +1343,7 @@ with shared.gradio_root:
         instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
 
         # Luego en tu lista ctrls:
-        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies]
+        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity]
         ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
         ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
                 instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
