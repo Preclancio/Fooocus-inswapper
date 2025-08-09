@@ -115,6 +115,7 @@ class AsyncTask:
         self.inswapper_target_image_indicies = args.pop()
         self.codeformer_enabled = args.pop()
         self.codeformer_fidelity=args.pop()
+        self.exclude_mouth=args.pop()
 
         print(f"Inswapper: {'ENABLED' if self.inswapper_enabled else 'DISABLED'}")
 
@@ -382,7 +383,7 @@ def worker():
             imgs = [inpaint_worker.current_task.post_process(x) for x in imgs]
 
         if async_task.inswapper_enabled:
-            imgs = perform_face_swap(imgs, async_task.inswapper_source_image, async_task.inswapper_source_image_indicies, async_task.inswapper_target_image_indicies, async_task.codeformer_enabled,async_task.codeformer_fidelity)
+            imgs = perform_face_swap(imgs, async_task.inswapper_source_image, async_task.inswapper_source_image_indicies, async_task.inswapper_target_image_indicies, async_task.codeformer_enabled,async_task.codeformer_fidelity,async_task.exclude_mouth)
 
         current_progress = int(base_progress + (100 - preparation_steps) / float(all_steps) * steps)
         if modules.config.default_black_out_nsfw or async_task.black_out_nsfw:
