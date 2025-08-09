@@ -6,7 +6,7 @@ import cv2
 sys.path.append('../inswapper')
 from inswapper.swapper import process
 
-def perform_face_swap(images, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled=False, codeformer_fidelity=0.5):
+def perform_face_swap(images, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled=False, codeformer_fidelity=0.5, exclude_mouth=False):
     swapped_images = []
     resize_min_resolution = True
 
@@ -41,8 +41,9 @@ def perform_face_swap(images, inswapper_source_image, inswapper_source_image_ind
             [source_image], 
             item, 
             inswapper_source_image_indicies, 
-            inswapper_target_image_indicies, 
-            "../inswapper/checkpoints/inswapper_128.onnx"
+            inswapper_target_image_indicies,
+            "../inswapper/checkpoints/inswapper_128.onnx",
+            exclude_mouth
         )
 
         result_image = np.array(result_image)
