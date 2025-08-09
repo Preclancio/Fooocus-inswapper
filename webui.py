@@ -445,6 +445,10 @@ with shared.gradio_root:
                                 interactive=True,
                                 info="0.0 = máxima restauración (más IA), 1.0 = máxima fidelidad al original"
                             )
+                            exclude_mouth = gr.Checkbox(
+                                label="exclude mouth on Faceswap", 
+                                value=False
+                            )
 
                         with gr.Column():
                             inswapper_source_image = gr.Image(
@@ -1343,7 +1347,7 @@ with shared.gradio_root:
         instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
 
         # Luego en tu lista ctrls:
-        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity]
+        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity,exclude_mouth]
         ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
         ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
                 instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
