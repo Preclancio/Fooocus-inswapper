@@ -149,7 +149,24 @@ def process(source_img: Union[Image.Image, list],
             x1, y1, x2, y2 = map(int, face.bbox)
             face_height = y2 - y1
             mouth_top = y1 + int(face_height * (1 - mouth_height_ratio))
-            result[mouth_top:y2, x1:x2] = target_img_cv[mouth_top:y2, x1:x2]
+
+            # Creamos máscara binaria negra
+            mask = np.zeros_like(target_img_cv[:, :, 0], dtype=np.uint8)
+            # Pintamos solo la zona de la boca en blanco
+            mask[mouth_top:y2, x1:x2] = 255
+
+            # Difuminar bordes de la máscara
+            mask = cv2.GaussianBlur(mask, (25, 25), 0)
+
+            # Fusionar usando la máscara suavizada
+            mouth_region = target_img_cv.copy()
+            result = cv2.seamlessClone(
+                mouth_region,    # fuente (boca original)
+                result,          # destino (rostro swappeado)
+                mask,            # máscara suavizada
+                (x1 + (x2 - x1)//2, mouth_top + (y2 - mouth_top)//2),  # centro
+                cv2.NORMAL_CLONE
+            )
 
     # Convertir a PIL antes de devolver
     result_image = Image.fromarray(cv2.cvtColor(result, cv2.COLOR_BGR2RGB))
