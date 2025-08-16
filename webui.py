@@ -440,10 +440,20 @@ with shared.gradio_root:
                                 label="CodeFormer Fidelity",
                                 minimum=0.0,
                                 maximum=1.0,
-                                value=0.5,
+                                value=0.8,
                                 step=0.05,
                                 interactive=True,
                                 info="0.0 = máxima restauración (más IA), 1.0 = máxima fidelidad al original"
+                            )
+                            #  Nuevo: slider para trasparence
+                            codeformer_alpha = gr.Slider(
+                                label="Transparencia Codeformer",
+                                minimum=0.0,
+                                maximum=100,
+                                value=50,
+                                step=10,
+                                interactive=True,
+                                info="0.0 = sin CodeFormer, 100 = CodeFormer completo"
                             )
                             exclude_mouth = gr.Checkbox(
                                 label="exclude mouth on Faceswap", 
@@ -1347,7 +1357,7 @@ with shared.gradio_root:
         instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
 
         # Luego en tu lista ctrls:
-        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity,exclude_mouth]
+        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity, codeformer_alpha,exclude_mouth]
         ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
         ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
                 instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
