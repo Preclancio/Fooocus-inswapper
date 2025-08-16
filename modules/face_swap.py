@@ -6,9 +6,19 @@ import cv2
 sys.path.append('../inswapper')
 from inswapper.swapper import process
 
-def perform_face_swap(images, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled=False, codeformer_fidelity=0.5, exclude_mouth=False):
+def perform_face_swap(
+    images,
+    inswapper_source_image,
+    inswapper_source_image_indicies,
+    inswapper_target_image_indicies,
+    codeformer_enabled=False,
+    codeformer_fidelity=0.5,
+    codeformer_alpha=50,
+    exclude_mouth=False
+):
     swapped_images = []
     resize_min_resolution = True
+    codeformer_alpha=codeformer_alpha/100     # <--- NUEVO: porcentaje de CodeFormer
 
     # Si se usa CodeFormer, inicialízalo una sola vez
     if codeformer_enabled:
@@ -58,18 +68,22 @@ def perform_face_swap(images, inswapper_source_image, inswapper_source_image_ind
 
         # Aplicar CodeFormer si está activado
         if codeformer_enabled:
-            result_image = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
-            result_image = face_restoration(result_image, 
-                                      True, 
-                                      True, 
-                                      1, 
-                                      codeformer_fidelity,
-                                      upsampler,
-                                      codeformer_net,
-                                      device)
+            # Restaurar con CodeFormer
+            restored = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
+            restored = face_restoration(
+                restored, 
+                True, 
+                True, 
+                1, 
+                codeformer_fidelity,
+                upsampler,
+                codeformer_net,
+                device
+            )
 
+            # Mezclar restaurado y original con alpha
+            result_image = cv2.addWeighted(restored, codeformer_alpha, result_image, 1 - codeformer_alpha, 0)
 
-        #  Esto se aplica siempre, con o sin CodeFormer
         swapped_images.append(result_image)
 
     return swapped_images
