@@ -2,7 +2,7 @@
     "default_model": "animemix_v70.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
-    "default_vae": "ponyDiffusionV6XL_vae.safetensors",
+    "default_vae": "illustriousXLV20_v10.safetensors",
     "default_loras": [
         [
             true,
@@ -50,6 +50,8 @@
     "embeddings_downloads": {},
     "lora_downloads": {},
     "vae_downloads": {
-        "ponyDiffusionV6XL_vae.safetensors": "https://huggingface.co/mashb1t/fav_models/resolve/main/fav/ponyDiffusionV6XL_vae.safetensors"
+        "ponyDiffusionV6XL_vae.safetensors": "https://huggingface.co/mashb1t/fav_models/resolve/main/fav/ponyDiffusionV6XL_vae.safetensors",
+        "illustriousXLV20_v10.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/illustriousXLV20_v10.safetensors"
+        
     }
 }
