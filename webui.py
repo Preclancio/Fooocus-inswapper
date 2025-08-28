@@ -446,14 +446,23 @@ with shared.gradio_root:
                                 info="0.0 = máxima restauración (más IA), 1.0 = máxima fidelidad al original"
                             )
                             #  Nuevo: slider para trasparence
-                            codeformer_alpha = gr.Slider(
+                            codeformer_alpha= gr.Slider(
                                 label="Transparencia Codeformer",
                                 minimum=0.0,
                                 maximum=100,
-                                value=50,
+                                value=70,
                                 step=10,
                                 interactive=True,
                                 info="0.0 = sin CodeFormer, 100 = CodeFormer completo"
+                            )
+                            codeformer_upscale = gr.Slider(
+                                label="Codeformer Upscale",
+                                minimum=1,
+                                maximum=4,
+                                value=2,
+                                step=1,
+                                interactive=True,
+                                info="1 = sin Upscale, 4 = Aggressive Upscale"
                             )
                             exclude_mouth = gr.Checkbox(
                                 label="exclude mouth on Faceswap", 
@@ -1357,7 +1366,7 @@ with shared.gradio_root:
         instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
 
         # Luego en tu lista ctrls:
-        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity, codeformer_alpha,exclude_mouth]
+        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity, codeformer_alpha,codeformer_upscale,exclude_mouth]
         ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
         ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
                 instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
