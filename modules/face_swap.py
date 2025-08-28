@@ -14,11 +14,12 @@ def perform_face_swap(
     codeformer_enabled=False,
     codeformer_fidelity=0.5,
     codeformer_alpha=50,
-    exclude_mouth=False
+    codeformer_upscale=2,
+    exclude_mouth=False # <--- NUEVO: puedes elegir 1, 2 o 4
 ):
     swapped_images = []
     resize_min_resolution = True
-    codeformer_alpha=codeformer_alpha/100     # <--- NUEVO: porcentaje de CodeFormer
+    codeformer_alpha = codeformer_alpha / 100     # porcentaje en [0–1]
 
     # Si se usa CodeFormer, inicialízalo una sola vez
     if codeformer_enabled:
@@ -68,18 +69,21 @@ def perform_face_swap(
 
         # Aplicar CodeFormer si está activado
         if codeformer_enabled:
-            # Restaurar con CodeFormer
             restored = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
             restored = face_restoration(
                 restored, 
                 True, 
                 True, 
-                1, 
+                codeformer_upscale,    # <--- ahora configurable
                 codeformer_fidelity,
                 upsampler,
                 codeformer_net,
                 device
             )
+
+            # 🔥 Asegurarnos de que restored y result_image tengan el mismo tamaño
+            if restored.shape[:2] != result_image.shape[:2]:
+                restored = cv2.resize(restored, (result_image.shape[1], result_image.shape[0]))
 
             # Mezclar restaurado y original con alpha
             result_image = cv2.addWeighted(restored, codeformer_alpha, result_image, 1 - codeformer_alpha, 0)
