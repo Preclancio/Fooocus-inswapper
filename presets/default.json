@@ -44,8 +44,8 @@
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors",
-        "RealismEngine.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/realismEngineSDXL_v30VAE.safetensors"
+        "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors"
+        
     },
     "embeddings_downloads": {},
     "lora_downloads": {
