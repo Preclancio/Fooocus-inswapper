@@ -187,13 +187,6 @@ with shared.gradio_root:
 
             with gr.Row(visible=False) as image_input_panel:
                 with gr.Tabs():
-                    with gr.TabItem(label='Upscale or Variation') as uov_tab:
-                        with gr.Row():
-                            with gr.Column():
-                                uov_input_image = grh.Image(label='Image', source='upload', type='numpy', show_label=False)
-                            with gr.Column():
-                                uov_method = gr.Radio(label='Upscale or Variation:', choices=flags.uov_list, value=flags.disabled)
-                                gr.HTML('<a href="https://github.com/lllyasviel/Fooocus/discussions/390" target="_blank">\U0001F4D4 Documentation</a>')
                     with gr.TabItem(label='Image Prompt') as ip_tab:
                         with gr.Row():
                             ip_images = []
@@ -237,7 +230,15 @@ with shared.gradio_root:
                         ip_advanced.change(ip_advance_checked, inputs=ip_advanced,
                                            outputs=ip_ad_cols + ip_types + ip_stops + ip_weights,
                                            queue=False, show_progress=False)
-
+                    
+                    with gr.TabItem(label='Upscale or Variation') as uov_tab:
+                        with gr.Row():
+                            with gr.Column():
+                                uov_input_image = grh.Image(label='Image', source='upload', type='numpy', show_label=False)
+                            with gr.Column():
+                                uov_method = gr.Radio(label='Upscale or Variation:', choices=flags.uov_list, value=flags.disabled)
+                                gr.HTML('<a href="https://github.com/lllyasviel/Fooocus/discussions/390" target="_blank">\U0001F4D4 Documentation</a>')
+                    
                     with gr.TabItem(label='Inpaint or Outpaint') as inpaint_tab:
                         with gr.Row():
                             with gr.Column():
