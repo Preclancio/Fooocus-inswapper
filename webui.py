@@ -1151,14 +1151,14 @@ with shared.gradio_root:
                                                                       value=False)
 
                         controlnet_softness = gr.Slider(label='Softness of ControlNet', minimum=0.0, maximum=1.0,
-                                                        step=0.001, value=0.25,
+                                                        step=0.001, value=0.10,
                                                         info='Similar to the Control Mode in A1111 (use 0.0 to disable). ')
 
                         with gr.Tab(label='Canny'):
                             canny_low_threshold = gr.Slider(label='Canny Low Threshold', minimum=1, maximum=255,
-                                                            step=1, value=64)
+                                                            step=1, value=5)
                             canny_high_threshold = gr.Slider(label='Canny High Threshold', minimum=1, maximum=255,
-                                                             step=1, value=128)
+                                                             step=1, value=178)
 
                     with gr.Tab(label='Inpaint'):
                         debugging_inpaint_preprocessor = gr.Checkbox(label='Debug Inpaint Preprocessing', value=False)
