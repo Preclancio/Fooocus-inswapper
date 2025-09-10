@@ -56,15 +56,21 @@ def swap_face(face_swapper,
               target_index,
               temp_frame):
     """
-    paste source_face on target image
+    paste source_face on target image + blending mask
     """
     source_face = source_faces[source_index]
     target_face = target_faces[target_index]
 
-    return face_swapper.get(temp_frame, target_face, source_face, paste_back=True)
- 
+    # resultado inicial del swap
+    result = face_swapper.get(temp_frame, target_face, source_face, paste_back=True)
 
+    # blending adicional con apply_face_mask
+    from modules.reactor.reactor_mask import apply_face_mask
+    entire_mask_image = np.zeros_like(result)  # máscara vacía
+    result = apply_face_mask(result, temp_frame, target_face, entire_mask_image)
 
+    return result
+                  
 def process(source_img: Union[Image.Image, list],
             target_img: Image.Image,
             source_indexes: str,
