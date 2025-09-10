@@ -31,7 +31,7 @@ cp -r inswapper/CodeFormer/CodeFormer/facelib venv/lib/site-packages/
 mkdir -p inswapper/checkpoints
 
 # Download the ONNX model
-wget https://github.com/facefusion/facefusion-assets/releases/download/models/inswapper_128.onnx -O inswapper/checkpoints/inswapper_128.onnx
+wget https://huggingface.co/shaitanzx/FooocusExtend/resolve/main/inswapper_128.onnx -O inswapper/checkpoints/inswapper_128.onnx
 
 # Setup InstantID
 mkdir -p InstantID/models/antelopev2
