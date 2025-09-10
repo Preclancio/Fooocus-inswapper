@@ -18,7 +18,7 @@ from basicsr.utils.registry import ARCH_REGISTRY
 
 def check_ckpts():
     pretrain_model_url = {
-        'codeformer': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth',
+        'codeformer': 'https://huggingface.co/shaitanzx/FooocusExtend/resolve/main/codeformer.pth',
         'detection': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_Resnet50_Final.pth',
         'parsing': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth',
         'realesrgan': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/RealESRGAN_x2plus.pth'
