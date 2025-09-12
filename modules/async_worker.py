@@ -110,6 +110,7 @@ class AsyncTask:
                 self.cn_tasks[cn_type].append([cn_img, cn_stop, cn_weight])
 
         self.inswapper_enabled = args.pop()
+        self.only_codeformer = args.pop()
         self.inswapper_source_image = args.pop()  
         self.inswapper_source_image_indicies = args.pop()
         self.inswapper_target_image_indicies = args.pop()
@@ -385,7 +386,7 @@ def worker():
             imgs = [inpaint_worker.current_task.post_process(x) for x in imgs]
 
         if async_task.inswapper_enabled:
-            imgs = perform_face_swap(imgs, async_task.inswapper_source_image, async_task.inswapper_source_image_indicies, async_task.inswapper_target_image_indicies, async_task.codeformer_enabled,async_task.codeformer_fidelity,async_task.codeformer_alpha,async_task.codeformer_upscale, async_task.exclude_mouth)
+            imgs = perform_face_swap(imgs,async_task.only_codeformer, async_task.inswapper_source_image, async_task.inswapper_source_image_indicies, async_task.inswapper_target_image_indicies, async_task.codeformer_enabled,async_task.codeformer_fidelity,async_task.codeformer_alpha,async_task.codeformer_upscale, async_task.exclude_mouth)
 
         current_progress = int(base_progress + (100 - preparation_steps) / float(all_steps) * steps)
         if modules.config.default_black_out_nsfw or async_task.black_out_nsfw:
