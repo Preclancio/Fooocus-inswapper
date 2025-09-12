@@ -8,21 +8,22 @@ from inswapper.swapper import process
 
 def perform_face_swap(
     images,
-    inswapper_source_image,
-    inswapper_source_image_indicies,
-    inswapper_target_image_indicies,
+    only_codeformer=False,
+    inswapper_source_image=None,
+    inswapper_source_image_indicies=None,
+    inswapper_target_image_indicies=None,
     codeformer_enabled=False,
     codeformer_fidelity=0.5,
     codeformer_alpha=50,
     codeformer_upscale=2,
-    exclude_mouth=False # <--- NUEVO: puedes elegir 1, 2 o 4
+    exclude_mouth=False   # 🔥 NUEVO: si es True, solo se aplica CodeFormer
 ):
     swapped_images = []
     resize_min_resolution = True
-    codeformer_alpha = codeformer_alpha / 100     # porcentaje en [0–1]
+    codeformer_alpha = codeformer_alpha / 100  # convertir a rango [0–1]
 
-    # Si se usa CodeFormer, inicialízalo una sola vez
-    if codeformer_enabled:
+    # Inicializar CodeFormer si se va a usar
+    if codeformer_enabled or only_codeformer:
         from inswapper.restoration import face_restoration, check_ckpts, set_realesrgan, torch, ARCH_REGISTRY
 
         check_ckpts()
@@ -44,20 +45,21 @@ def perform_face_swap(
         codeformer_net.eval()
 
     for item in images:
-        source_image = Image.fromarray(inswapper_source_image)
-        print(f"Inswapper: Source indices: {inswapper_source_image_indicies}")
-        print(f"Inswapper: Target indices: {inswapper_target_image_indicies}")      
-
-        result_image = process(
-            [source_image], 
-            item, 
-            inswapper_source_image_indicies, 
-            inswapper_target_image_indicies,
-            "../inswapper/checkpoints/inswapper_128.onnx",
-            exclude_mouth
-        )
-
-        result_image = np.array(result_image)
+        # 🔥 Si only_codeformer está activado, no hacemos swap
+        if not only_codeformer and inswapper_source_image is not None:
+            source_image = Image.fromarray(inswapper_source_image)
+            result_image = process(
+                [source_image], 
+                item, 
+                inswapper_source_image_indicies, 
+                inswapper_target_image_indicies,
+                "../inswapper/checkpoints/inswapper_128.onnx",
+                exclude_mouth
+            )
+            result_image = np.array(result_image)
+        else:
+            # Si no hacemos swap, usamos la imagen original tal cual
+            result_image = np.array(item)
 
         # Escalar si es necesario
         if resize_min_resolution:
@@ -67,25 +69,24 @@ def perform_face_swap(
                 new_w, new_h = int(w * scale), int(h * scale)
                 result_image = cv2.resize(result_image, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
 
-        # Aplicar CodeFormer si está activado
-        if codeformer_enabled:
+        # Aplicar CodeFormer si está activado o si estamos en modo only_codeformer
+        if codeformer_enabled or only_codeformer:
             restored = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
             restored = face_restoration(
                 restored, 
                 True, 
                 True, 
-                codeformer_upscale,    # <--- ahora configurable
+                codeformer_upscale,
                 codeformer_fidelity,
                 upsampler,
                 codeformer_net,
                 device
             )
 
-            # 🔥 Asegurarnos de que restored y result_image tengan el mismo tamaño
+            # Igualar tamaños si difieren
             if restored.shape[:2] != result_image.shape[:2]:
                 restored = cv2.resize(restored, (result_image.shape[1], result_image.shape[0]))
 
-            # Mezclar restaurado y original con alpha
             result_image = cv2.addWeighted(restored, codeformer_alpha, result_image, 1 - codeformer_alpha, 0)
 
         swapped_images.append(result_image)
