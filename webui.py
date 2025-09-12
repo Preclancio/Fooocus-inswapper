@@ -418,25 +418,38 @@ with shared.gradio_root:
                 with gr.Accordion(label="Inswapper", open=False):
                     with gr.Row():
                         with gr.Column():
-                            inswapper_enabled = gr.Checkbox(label="Enabled", value=False)
+                            # ✅ Main toggle
+                            inswapper_enabled = gr.Checkbox(
+                                label="Enable FaceSwap / Restoration",
+                                value=False,
+                                info="Turn on to enable face swapping or restoration."
+                            )
+
+                            # ✅ Only restoration without swap
+                            only_codeformer = gr.Checkbox(
+                                label="Only Face Restoration (Skip FaceSwap)",
+                                value=False,
+                                info="Ignore FaceSwap and apply only CodeFormer restoration."
+                            )
+
+                            # ✅ Swap indices (only used if FaceSwap is enabled and 'only_codeformer' is False)
                             inswapper_source_image_indicies = gr.Textbox(
-                                label="Source Image Index",
-                                info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)",
+                                label="Source Face Index",
+                                info="-1 = swap all faces, otherwise specify index (0, 1, 2...)",
                                 value="0"
                             )
                             inswapper_target_image_indicies = gr.Textbox(
-                                label="Target Image Index",
-                                info="-1 will swap all faces, otherwise provide the 0-based index of the face (0, 1, etc)",
+                                label="Target Face Index",
+                                info="-1 = swap all faces, otherwise specify index (0, 1, 2...)",
                                 value="0"
                             )
-                            
-                            # Nuevo: activar CodeFormer
+
+                            # ✅ CodeFormer (used with FaceSwap if enabled)
                             codeformer_enabled = gr.Checkbox(
-                                label="Apply CodeFormer (Face Restore)", 
-                                value=False
+                                label="Apply CodeFormer After FaceSwap", 
+                                value=True
                             )
 
-                            #  Nuevo: slider para fidelity
                             codeformer_fidelity = gr.Slider(
                                 label="CodeFormer Fidelity",
                                 minimum=0.0,
@@ -444,37 +457,39 @@ with shared.gradio_root:
                                 value=0.8,
                                 step=0.05,
                                 interactive=True,
-                                info="0.0 = máxima restauración (más IA), 1.0 = máxima fidelidad al original"
+                                info="0.0 = maximum restoration (more AI), 1.0 = maximum fidelity to original"
                             )
-                            #  Nuevo: slider para trasparence
-                            codeformer_alpha= gr.Slider(
-                                label="Transparencia Codeformer",
+
+                            codeformer_alpha = gr.Slider(
+                                label="CodeFormer Transparency",
                                 minimum=0.0,
                                 maximum=100,
                                 value=70,
                                 step=10,
                                 interactive=True,
-                                info="0.0 = sin CodeFormer, 100 = CodeFormer completo"
+                                info="0 = no CodeFormer effect, 100 = full CodeFormer result"
                             )
+
                             codeformer_upscale = gr.Slider(
-                                label="Codeformer Upscale",
+                                label="CodeFormer Upscale",
                                 minimum=1,
                                 maximum=4,
                                 value=2,
                                 step=1,
                                 interactive=True,
-                                info="1 = sin Upscale, 4 = Aggressive Upscale"
+                                info="1 = no upscale, 4 = maximum upscale"
                             )
+
                             exclude_mouth = gr.Checkbox(
-                                label="exclude mouth on Faceswap", 
+                                label="Exclude Mouth Area in FaceSwap", 
                                 value=False
                             )
 
                         with gr.Column():
                             inswapper_source_image = gr.Image(
-                                label='Source Face Image', 
-                                source='upload', 
-                                type='numpy'
+                                label="Source Face Image", 
+                                source="upload", 
+                                type="numpy"
                             )
 
             with gr.Row():
@@ -1367,7 +1382,7 @@ with shared.gradio_root:
         instantid_adapter_strength_placeholder = gr.Slider(visible=False, value=0.0)
 
         # Luego en tu lista ctrls:
-        ctrls += [inswapper_enabled, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity, codeformer_alpha,codeformer_upscale,exclude_mouth]
+        ctrls += [inswapper_enabled,only_codeformer, inswapper_source_image, inswapper_source_image_indicies, inswapper_target_image_indicies, codeformer_enabled, codeformer_fidelity, codeformer_alpha,codeformer_upscale,exclude_mouth]
         ctrls += [photomaker_enabled_placeholder, photomaker_images_placeholder]  # PhotoMaker (2 elementos)
         ctrls += [instantid_enabled_placeholder, instantid_source_placeholder, instantid_pose_placeholder, 
                 instantid_id_strength_placeholder, instantid_adapter_strength_placeholder]  # InstantID (5 elementos)
