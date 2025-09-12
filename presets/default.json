@@ -38,7 +38,7 @@
     "default_prompt_negative": "bad face, bad fingers, deformed, low quality",
     "default_styles": [
         "Fooocus Enhance",
-        "Fooocus Negative"
+        "Fooocus Semi Realistic"
     ],
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
