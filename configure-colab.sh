@@ -16,8 +16,8 @@ cd ..
 # Install Python dependencies
 pip install -r requirements_versions.txt
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip3 install xformers==0.0.29.post2
-pip install python-dotenv
+#pip3 install xformers==0.0.29.post2
+#pip install python-dotenv
 # Copy directories
 echo "Copying basicsr"
 cp -r inswapper/CodeFormer/CodeFormer/basicsr /usr/local/lib/python*/dist-packages
