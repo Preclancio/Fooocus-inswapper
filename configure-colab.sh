@@ -16,7 +16,7 @@ cd ..
 # Install Python dependencies
 pip install -r requirements_versions.txt
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install xformers==0.0.26.post1
+pip3 install xformers==0.0.29.post2
 pip install python-dotenv
 # Copy directories
 echo "Copying basicsr"
