@@ -1,5 +1,5 @@
 {
-    "default_model": "bgl_xl1.safetensors",
+    "default_model": "lustifySDXL_OLT.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
     "default_loras": [
@@ -43,7 +43,8 @@
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors"
+        "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors",
+        "lustifySDXL_OLT":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/lustifySDXL_OLT.safetensors"
         
     },
     "embeddings_downloads": {},
