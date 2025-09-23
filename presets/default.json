@@ -44,7 +44,7 @@
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
         "bgl_xl1.safetensors": "https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/bgL_xl1.safetensors",
-        "lustifySDXL_OLT":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/lustifySDXL_OLT.safetensors"
+        "lustifySDXL_OLT.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/lustifySDXL_OLT.safetensors"
         
     },
     "embeddings_downloads": {},
