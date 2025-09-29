@@ -6,6 +6,7 @@ import cv2
 sys.path.append('../inswapper')
 from inswapper.swapper import process
 
+
 def perform_face_swap(
     images,
     only_codeformer=False,
@@ -16,16 +17,16 @@ def perform_face_swap(
     codeformer_fidelity=0.5,
     codeformer_alpha=50,
     codeformer_upscale=2,
-    exclude_mouth=False   # 🔥 NUEVO: si es True, solo se aplica CodeFormer
+    exclude_mouth=False
 ):
     swapped_images = []
     resize_min_resolution = True
-    codeformer_alpha = codeformer_alpha / 100  # convertir a rango [0–1]
+    alpha = codeformer_alpha / 100  # convertir a [0–1]
 
-    # Inicializar CodeFormer si se va a usar
+    # 🔹 Inicializar CodeFormer (solo si está activado)
+    codeformer_net, upsampler, device = None, None, None
     if codeformer_enabled or only_codeformer:
         from inswapper.restoration import face_restoration, check_ckpts, set_realesrgan, torch, ARCH_REGISTRY
-
         check_ckpts()
         upsampler = set_realesrgan()
         device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
@@ -43,25 +44,36 @@ def perform_face_swap(
         checkpoint = torch.load(ckpt_path, map_location=device)["params_ema"]
         codeformer_net.load_state_dict(checkpoint)
         codeformer_net.eval()
+        print("CodeFormer cargado ✅")
+
+    # 🔹 Inicializar GPEN siempre
+    sys.path.append("../inswapper/GPEN")
+    from inswapper.GPEN.face_enhancement import FaceEnhancement
+    faceenhancer = FaceEnhancement(
+        size=512,
+        model="GPEN-512",
+        channel_multiplier=2,
+        base_dir="./inswapper/GPEN"
+    )
+    print("GPEN FaceEnhancement cargado ✅")
 
     for item in images:
-        # 🔥 Si only_codeformer está activado, no hacemos swap
+        # 🔹 Primero face swap si no estamos solo con restauración
         if not only_codeformer and inswapper_source_image is not None:
             source_image = Image.fromarray(inswapper_source_image)
             result_image = process(
-                [source_image], 
-                item, 
-                inswapper_source_image_indicies, 
+                [source_image],
+                item,
+                inswapper_source_image_indicies,
                 inswapper_target_image_indicies,
                 "../inswapper/checkpoints/inswapper_128.onnx",
                 exclude_mouth
             )
             result_image = np.array(result_image)
         else:
-            # Si no hacemos swap, usamos la imagen original tal cual
             result_image = np.array(item)
 
-        # Escalar si es necesario
+        # 🔹 Escalar si es necesario
         if resize_min_resolution:
             h, w = result_image.shape[:2]
             if min(h, w) < 512:
@@ -69,25 +81,36 @@ def perform_face_swap(
                 new_w, new_h = int(w * scale), int(h * scale)
                 result_image = cv2.resize(result_image, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
 
-        # Aplicar CodeFormer si está activado o si estamos en modo only_codeformer
+        # 🔹 Restauración
         if codeformer_enabled or only_codeformer:
+            # --- Paso 1: Restauración con CodeFormer ---
             restored = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
             restored = face_restoration(
-                restored, 
-                True, 
-                True, 
+                restored,
+                True,
+                True,
                 codeformer_upscale,
                 codeformer_fidelity,
                 upsampler,
                 codeformer_net,
                 device
             )
-
-            # Igualar tamaños si difieren
             if restored.shape[:2] != result_image.shape[:2]:
                 restored = cv2.resize(restored, (result_image.shape[1], result_image.shape[0]))
+            result_image = cv2.addWeighted(restored, alpha, result_image, 1 - alpha, 0)
 
-            result_image = cv2.addWeighted(restored, codeformer_alpha, result_image, 1 - codeformer_alpha, 0)
+            # --- Paso 2: Pasar resultado por GPEN ---
+            restored_gpen, _, _ = faceenhancer.process(result_image)
+            if restored_gpen.shape[:2] != result_image.shape[:2]:
+                restored_gpen = cv2.resize(restored_gpen, (result_image.shape[1], result_image.shape[0]))
+            result_image = cv2.addWeighted(restored_gpen, alpha, result_image, 1 - alpha, 0)
+
+        else:
+            # --- Solo GPEN por defecto ---
+            restored, _, _ = faceenhancer.process(result_image)
+            if restored.shape[:2] != result_image.shape[:2]:
+                restored = cv2.resize(restored, (result_image.shape[1], result_image.shape[0]))
+            result_image = cv2.addWeighted(restored, alpha, result_image, 1 - alpha, 0)
 
         swapped_images.append(result_image)
 
