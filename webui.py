@@ -447,7 +447,7 @@ with shared.gradio_root:
                             # ✅ CodeFormer (used with FaceSwap if enabled)
                             codeformer_enabled = gr.Checkbox(
                                 label="Apply CodeFormer After FaceSwap", 
-                                value=True
+                                value=False
                             )
 
                             codeformer_fidelity = gr.Slider(
