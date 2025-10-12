@@ -883,12 +883,12 @@ def worker():
         if advance_progress:
             current_progress += 1
         progressbar(async_task, 1, 'Downloading Lightning components ...')
-        async_task.performance_loras += [(modules.config.downloading_sdxl_lightning_lora(), 1.0)]
+        async_task.performance_loras += [(modules.config.downloading_sdxl_hyper_sd_lora(), 1.0)]
         if async_task.refiner_model_name != 'None':
             print(f'Refiner disabled in Lightning mode.')
         async_task.refiner_model_name = 'None'
-        #async_task.sampler_name = 'euler'
-        #async_task.scheduler_name = 'sgm_uniform'
+        #async_task.sampler_name = 'dpmpp_sde_gpu'
+        #async_task.scheduler_name = 'karras'
         #async_task.sharpness = 0.0
         async_task.cfg_scale = 1.0
         async_task.adaptive_cfg = 1.0
