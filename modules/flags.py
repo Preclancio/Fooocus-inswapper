@@ -138,7 +138,7 @@ class Steps(IntEnum):
     QUALITY = 60
     SPEED = 30
     EXTREME_SPEED = 8
-    LIGHTNING = 4
+    LIGHTNING = 5
     HYPER_SD = 4
 
     @classmethod
