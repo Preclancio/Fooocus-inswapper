@@ -57,8 +57,7 @@
         "light_dark.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/dark.safetensors"
     },
     "vae_downloads": {
-        "sdxlNaturalSkintone_fp32.safetensors": "https://huggingface.co/datasets/Ahus/Loras/resolve/main/sdxlNaturalSkintone_fp32.safetensors",
-        
+        "sdxlNaturalSkintone_fp32.safetensors": "https://huggingface.co/datasets/Ahus/Loras/resolve/main/sdxlNaturalSkintone_fp32.safetensors"   
     },
     "previous_default_models": [
         "juggernautXL_version8Rundiffusion.safetensors",
