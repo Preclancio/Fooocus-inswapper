@@ -177,7 +177,8 @@ class Performance(Enum):
     def has_restricted_features(cls, x) -> bool:
         if isinstance(x, Performance):
             x = x.value
-        return x in [cls.EXTREME_SPEED.value]
+        return False
+        #return x in [cls.EXTREME_SPEED.value]
 
     def steps(self) -> int | None:
         return Steps[self.name].value if self.name in Steps.__members__ else None
