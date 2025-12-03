@@ -903,12 +903,12 @@ def worker():
         if advance_progress:
             current_progress += 1
         progressbar(async_task, 1, 'Downloading LCM components ...')
-        async_task.performance_loras += [(modules.config.downloading_sdxl_lcm_lora(), 1.0)]
+        async_task.performance_loras += [(modules.config.downloading_sdxl_lcm_lora(), 0.8)]
         if async_task.refiner_model_name != 'None':
             print(f'Refiner disabled in LCM mode.')
         async_task.refiner_model_name = 'None'
         async_task.sampler_name = 'lcm'
-        async_task.scheduler_name = 'lcm'
+        async_task.scheduler_name = 'exponential'
         async_task.sharpness = 0.0
         async_task.cfg_scale = 1.0
         async_task.adaptive_cfg = 1.0
