@@ -753,7 +753,7 @@ def downloading_inpaint_models(v):
 
 def downloading_sdxl_lcm_lora():
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/sdxl_lcm_lora.safetensors',
+        url='https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora.safetensors',
         model_dir=paths_loras[0],
         file_name=modules.flags.PerformanceLoRA.EXTREME_SPEED.value
     )
