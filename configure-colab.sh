@@ -28,7 +28,8 @@ cp -r inswapper/CodeFormer/CodeFormer/facelib /usr/local/lib/python*/dist-packag
 mkdir -p inswapper/checkpoints
 
 # Download the ONNX model
-gdown --id 1krOLgjW2tAPaqV-Bw4YALz0xT5zlb5HF -O inswapper/checkpoints/inswapper_128.onnx
+#gdown --id 1krOLgjW2tAPaqV-Bw4YALz0xT5zlb5HF -O inswapper/checkpoints/inswapper_128.onnx
+wget https://huggingface.co/ezioruan/inswapper_128.onnx/resolve/main/inswapper_128.onnx -O /content/Fooocus-inswapper/inswapper/checkpoints/inswapper_128.onnx
 
 # Setup InstantID
 #mkdir -p InstantID/models/antelopev2
