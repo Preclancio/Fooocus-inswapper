@@ -563,7 +563,7 @@ with shared.gradio_root:
 
                         elif "huggingface.co" in enlace:
                             cmd = [
-                                "wget", "--content-disposition", "-O", output_path, enlace
+                                "wget", "-c", "--content-disposition", "-O", output_path, enlace
                             ]
 
                         else:
