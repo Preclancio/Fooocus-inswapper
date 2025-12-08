@@ -913,9 +913,9 @@ def worker():
         async_task.cfg_scale = 1.0
         async_task.adaptive_cfg = 1.0
         async_task.refiner_switch = 1.0
-        async_task.adm_scaler_positive = 1.0
-        async_task.adm_scaler_negative = 1.0
-        async_task.adm_scaler_end = 0.0
+        #async_task.adm_scaler_positive = 1.0
+        #async_task.adm_scaler_negative = 1.0
+        #async_task.adm_scaler_end = 0.0
         return current_progress
 
     def apply_image_input(async_task, base_model_additional_loras, clip_vision_path, controlnet_canny_path,
