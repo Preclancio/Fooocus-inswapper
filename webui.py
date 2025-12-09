@@ -537,10 +537,10 @@ with shared.gradio_root:
                         os.makedirs(folder, exist_ok=True)
                         output_path = os.path.join(folder, nombre_archivo)
 
-                        # Token para Civitai
+                        # Token para Civitai (solo funciona con civitai.com, no con civitaiarchive.com)
                         token = "d70d3ec4bf5b37e236d40d6335f4ff9b"
 
-                        # Decidir el comando según el tipo de URL
+                        # Detectar tipo de URL
                         if "drive.google.com" in enlace:
                             ensure_gdown()
                             match = re.search(r"/d/([a-zA-Z0-9_-]+)", enlace)
@@ -561,14 +561,24 @@ with shared.gradio_root:
                                 enlace
                             ]
 
+                        elif "civitaiarchive.com" in enlace:
+                            # NO usa token, este dominio no lo requiere
+                            cmd = [
+                                "curl", "-L",
+                                "-o", output_path,
+                                "--progress-bar",
+                                enlace
+                            ]
+
                         elif "huggingface.co" in enlace:
                             cmd = [
                                 "wget", "-c", "--content-disposition", "-O", output_path, enlace
                             ]
 
                         else:
-                            return "Enlace no reconocido: solo se permiten Civitai, Google Drive y Hugging Face."
+                            return "Enlace no reconocido: solo se permiten Civitai, CivitaiArchive, Google Drive y Hugging Face."
 
+                        # Ejecución del comando de descarga
                         try:
                             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
