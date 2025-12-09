@@ -909,7 +909,7 @@ def worker():
         async_task.refiner_model_name = 'None'
         #async_task.sampler_name = 'lcm'
         #async_task.scheduler_name = 'exponential'
-        async_task.sharpness = 0.0
+        async_task.sharpness = 1.0
         async_task.cfg_scale = 1.0
         async_task.adaptive_cfg = 1.0
         async_task.refiner_switch = 1.0
