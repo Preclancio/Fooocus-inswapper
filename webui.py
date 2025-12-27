@@ -569,6 +569,16 @@ with shared.gradio_root:
                                 "--progress-bar",
                                 enlace
                             ]
+                            
+                        elif "tungsten.run" in enlace:
+                            # Descarga directa para enlaces de Tungsten
+                            cmd = [
+                                "curl", "-L",
+                                "-o", output_path,
+                                "--progress-bar",
+                                enlace
+                            ]
+                                
 
                         elif "huggingface.co" in enlace:
                             cmd = [
