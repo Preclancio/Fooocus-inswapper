@@ -47,9 +47,9 @@
     },
     "embeddings_downloads": {},
     "lora_downloads": {
-        "Touch_of_Realism_SDXL_V2.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/Touch_of_Realism_SDXL_V2.safetensors",
+        "touch_of_Realism_SDXL_V2.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/Touch_of_Realism_SDXL_V2.safetensors",
         "dark.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/dark.safetensors",
-        "cumzilla.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/cmz_lora.safetensors",
+        "cumzilla.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/cmz_lora.safetensors"
     },
     "previous_default_models": [
         "juggernautXL_version8Rundiffusion.safetensors",
