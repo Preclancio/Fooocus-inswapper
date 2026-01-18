@@ -10,8 +10,8 @@
         ],
         [
             true,
-            "None",
-            1.0
+            "touch-of-realismV2.safetensors",
+            0.5
         ],
         [
             true,
@@ -34,7 +34,7 @@
     "default_sampler": "lcm",
     "default_scheduler": "exponential",
     "default_performance": "Extreme Speed",
-    "default_prompt": "",
+    "default_prompt": "face_refiner,SDXLposXL",
     "default_prompt_negative": "",
     "default_styles": [
         "Fooocus Enhance",
@@ -45,9 +45,12 @@
     "checkpoint_downloads": {
         "bigLove_xl4.safetensors": "https://huggingface.co/wsj1995/Checkpoint/resolve/main/897413/1990969/bigLove_xl4.safetensors"
     },
-    "embeddings_downloads": {},
+    "embeddings_downloads": {
+        "face_refiner.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/face_refiner.safetensors",
+        "SDXLposXL.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/SDXLposXL.safetensors"
+    },
     "lora_downloads": {
-        "ouch-of-realismV2.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/Touch_of_Realism_SDXL_V2.safetensors",
+        "touch-of-realismV2.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/Touch_of_Realism_SDXL_V2.safetensors",
         "light_dark.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/dark.safetensors",
         "cumzilla.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/cmz_lora.safetensors"
     },
