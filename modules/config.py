@@ -753,7 +753,7 @@ def downloading_inpaint_models(v):
 
 def downloading_sdxl_lcm_lora():
     load_file_from_url(
-        url='https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora_fp16.safetensors',
+        url='https://huggingface.co/Chroma111/CivitAI-Archive-2/resolve/main/1608870/1820705/dmd2_sdxl_4step_lora.safetensors',
         model_dir=paths_loras[0],
         file_name=modules.flags.PerformanceLoRA.EXTREME_SPEED.value
     )
@@ -762,7 +762,7 @@ def downloading_sdxl_lcm_lora():
 
 def downloading_sdxl_lightning_lora():
     load_file_from_url(
-        url='https://huggingface.co/mashb1t/misc/resolve/main/sdxl_hyper_sd_4step_lora.safetensors',
+        url='https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora_fp16.safetensors',
         model_dir=paths_loras[0],
         file_name=modules.flags.PerformanceLoRA.LIGHTNING.value
     )
