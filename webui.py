@@ -552,7 +552,7 @@ with shared.gradio_root:
                             file_id = match.group(1)
                             cmd = ["gdown", "--no-cookies", "--id", file_id, "-O", output_path]
 
-                        elif "civitai.com" in enlace:
+                        elif "civitai.com" in enlace or "civitai.red" in enlace:
                             cmd = [
                                 "curl", "-L",
                                 "-H", f"Authorization: Bearer {token}",
