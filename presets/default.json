@@ -15,8 +15,8 @@
         ],
         [
             true,
-            "None",
-            1.0
+            "amateur_photo,film_grain.safetensors",
+            0.60
         ],
         [
             true,
@@ -51,7 +51,8 @@
         "sd_xl_offset_example-lora_1.0.safetensors": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors",
         "touch-of-realismV2.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/Touch_of_Realism_SDXL_V2.safetensors",
         "cumzilla.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/cmz_lora.safetensors",
-        "light_dark.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/dark.safetensors"
+        "light_dark.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/dark.safetensors",
+        "amateur_photo,film_grain.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/amateur_photo%2Cfilm_grain.safetensors"
     },
     "previous_default_models": [
         "juggernautXL_version8Rundiffusion.safetensors",
