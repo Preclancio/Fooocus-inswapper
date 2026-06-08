@@ -607,7 +607,7 @@ default_inpaint_mask_cloth_category = get_config_item_or_set_default(
 
 default_inpaint_mask_sam_model = get_config_item_or_set_default(
     key='default_inpaint_mask_sam_model',
-    default_value='vit_b',
+    default_value='vit_h',
     validator=lambda x: x in [y[1] for y in modules.flags.inpaint_mask_sam_model if y[1] == x],
     expected_type=str
 )
@@ -1362,7 +1362,7 @@ default_aspect_ratio = get_config_item_or_set_default(
 )
 default_inpaint_engine_version = get_config_item_or_set_default(
     key='default_inpaint_engine_version',
-    default_value='v2.6',
+    default_value='None',
     validator=lambda x: x in modules.flags.inpaint_engine_versions,
     expected_type=str
 )
