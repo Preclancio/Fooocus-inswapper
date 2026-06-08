@@ -685,7 +685,7 @@ with shared.gradio_root:
                                                                          value=modules.config.default_inpaint_mask_sam_model,
                                                                          interactive=True)
                                     enhance_mask_box_threshold = gr.Slider(label="Box Threshold", minimum=0.0,
-                                                                           maximum=1.0, value=0.3, step=0.05,
+                                                                           maximum=1.0, value=0.35, step=0.05,
                                                                            interactive=True)
                                     enhance_mask_text_threshold = gr.Slider(label="Text Threshold", minimum=0.0,
                                                                             maximum=1.0, value=0.25, step=0.05,
@@ -708,13 +708,13 @@ with shared.gradio_root:
                                                                      info='Version of Fooocus inpaint model. If set, use performance Quality or Speed (no performance LoRAs) for best results.')
                                 enhance_inpaint_strength = gr.Slider(label='Inpaint Denoising Strength',
                                                                      minimum=0.0, maximum=1.0, step=0.001,
-                                                                     value=1.0,
+                                                                     value=0.70,
                                                                      info='Same as the denoising strength in A1111 inpaint. '
                                                                           'Only used in inpaint, not used in outpaint. '
                                                                           '(Outpaint always use 1.0)')
                                 enhance_inpaint_respective_field = gr.Slider(label='Inpaint Respective Field',
                                                                              minimum=0.0, maximum=1.0, step=0.001,
-                                                                             value=0.618,
+                                                                             value=0.45,
                                                                              info='The area to inpaint. '
                                                                                   'Value 0 is same as "Only Masked" in A1111. '
                                                                                   'Value 1 is same as "Whole Image" in A1111. '
