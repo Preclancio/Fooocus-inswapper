@@ -55,7 +55,7 @@
         "amateur_photo,film_grain.safetensors":"https://huggingface.co/sesiomco/bigloveXL_25/resolve/main/amateur_photo%2Cfilm_grain.safetensors"
     },
     "previous_default_models": [
-        "juggernautXL_version8Rundiffusion.safetensors",
+        "babesByStableYogiSDXL_v60FP16.safetensors",
         "juggernautXL_version7Rundiffusion.safetensors",
         "juggernautXL_v7Rundiffusion.safetensors",
         "juggernautXL_version6Rundiffusion.safetensors",
