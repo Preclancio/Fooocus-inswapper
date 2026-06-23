@@ -685,7 +685,7 @@ with shared.gradio_root:
                                                                          value=modules.config.default_inpaint_mask_sam_model,
                                                                          interactive=True)
                                     enhance_mask_box_threshold = gr.Slider(label="Box Threshold", minimum=0.0,
-                                                                           maximum=1.0, value=0.35, step=0.05,
+                                                                           maximum=1.0, value=0.1, step=0.05,
                                                                            interactive=True)
                                     enhance_mask_text_threshold = gr.Slider(label="Text Threshold", minimum=0.0,
                                                                             maximum=1.0, value=0.25, step=0.05,
