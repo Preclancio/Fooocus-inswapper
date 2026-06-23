@@ -121,7 +121,7 @@ def inpaint_mode_change(mode, inpaint_engine_version):
     return [
         gr.update(visible=False, value=''), gr.update(visible=True),
         gr.Dataset.update(visible=False, samples=modules.config.example_inpaint_prompts),
-        False, inpaint_engine_version, 1.0, 0.618
+        False, inpaint_engine_version, 0.75, 0.45
     ]
 
 reload_javascript()
@@ -195,6 +195,23 @@ with shared.gradio_root:
                             ip_weights = []
                             ip_ctrls = []
                             ip_ad_cols = []
+                            def aplicar_ratio_ctrl_u(image, current_type, is_image_prompt_active):
+                                # NUEVA REGLA: Si el checkbox de 'Input Image' está desmarcado,
+                                # O no hay imagen, O el tipo no es CtrlnetUnion -> volvemos al por defecto.
+                                if not is_image_prompt_active or image is None or current_type != flags.cn_ctrl_u:
+                                    return gr.update(value=modules.config.default_aspect_ratio)
+                                
+                                # Si pasa todas las pruebas, calculamos
+                                try:
+                                    value = modules.util.get_image_size_info(image, modules.flags.sdxl_aspect_ratios)
+                                    linea_recomendada = value.split('\n')[1]
+                                    dimensiones = linea_recomendada.split(',')[0]
+                                    ancho, alto = dimensiones.replace(' ', '').split('x')
+                                    nuevo_aspect_ratio = f"{ancho}×{alto}"
+                                    
+                                    return gr.update(value=nuevo_aspect_ratio)
+                                except:
+                                    return gr.update(value=modules.config.default_aspect_ratio)                                                        
                             for _ in range(flags.controlnet_image_count):
                                 with gr.Column():
                                     ip_image = grh.Image(label='Image', source='upload', type='numpy', show_label=False, height=300)
@@ -217,6 +234,7 @@ with shared.gradio_root:
                                         ip_ctrls.append(ip_type)
 
                                         ip_type.change(lambda x: flags.default_parameters[x], inputs=[ip_type], outputs=[ip_stop, ip_weight], queue=False, show_progress=False)
+                                    
                                     ip_ad_cols.append(ad_col)
                         ip_advanced = gr.Checkbox(label='Advanced', value=False, container=False)
                         gr.HTML('* \"Image Prompt\" is powered by Fooocus Image Mixture Engine (v1.0.1). <a href="https://github.com/lllyasviel/Fooocus/discussions/557" target="_blank">\U0001F4D4 Documentation</a>')
@@ -843,7 +861,7 @@ with shared.gradio_root:
                                                                          value=modules.config.default_inpaint_mask_sam_model,
                                                                          interactive=True)
                                     enhance_mask_box_threshold = gr.Slider(label="Box Threshold", minimum=0.0,
-                                                                           maximum=1.0, value=0.3, step=0.05,
+                                                                           maximum=1.0, value=0.1, step=0.05,
                                                                            interactive=True)
                                     enhance_mask_text_threshold = gr.Slider(label="Text Threshold", minimum=0.0,
                                                                             maximum=1.0, value=0.25, step=0.05,
@@ -851,7 +869,7 @@ with shared.gradio_root:
                                     enhance_mask_sam_max_detections = gr.Slider(label="Maximum number of detections",
                                                                                 info="Set to 0 to detect all",
                                                                                 minimum=0, maximum=10,
-                                                                                value=modules.config.default_sam_max_detections,
+                                                                                value=1,
                                                                                 step=1, interactive=True)
 
                             with gr.Accordion("Inpaint", visible=True, open=False):
@@ -866,13 +884,13 @@ with shared.gradio_root:
                                                                      info='Version of Fooocus inpaint model. If set, use performance Quality or Speed (no performance LoRAs) for best results.')
                                 enhance_inpaint_strength = gr.Slider(label='Inpaint Denoising Strength',
                                                                      minimum=0.0, maximum=1.0, step=0.001,
-                                                                     value=1.0,
+                                                                     value=0.75,
                                                                      info='Same as the denoising strength in A1111 inpaint. '
                                                                           'Only used in inpaint, not used in outpaint. '
                                                                           '(Outpaint always use 1.0)')
                                 enhance_inpaint_respective_field = gr.Slider(label='Inpaint Respective Field',
                                                                              minimum=0.0, maximum=1.0, step=0.001,
-                                                                             value=0.618,
+                                                                             value=0.45,
                                                                              info='The area to inpaint. '
                                                                                   'Value 0 is same as "Only Masked" in A1111. '
                                                                                   'Value 1 is same as "Whole Image" in A1111. '
@@ -968,7 +986,46 @@ with shared.gradio_root:
                                                        value=modules.config.default_aspect_ratio,
                                                        info='width × height',
                                                        elem_classes='aspect_ratios')
+                    # ... [Aquí está tu código donde se definen las variables] ...
 
+                    # Extraemos la primera casilla
+                    imagen_casilla_1 = ip_images[0]
+                    radio_casilla_1 = ip_types[0]
+
+                    # Agrupamos los 3 componentes que la función necesita leer
+                    mis_inputs = [imagen_casilla_1, radio_casilla_1, input_image_checkbox]
+
+                    # Evento A: Al subir una imagen a la casilla 1
+                    imagen_casilla_1.upload(
+                        aplicar_ratio_ctrl_u,
+                        inputs=mis_inputs,
+                        outputs=[aspect_ratios_selection],
+                        queue=False, show_progress=False
+                    )
+
+                    # Evento B: Al borrar la imagen de la casilla 1
+                    imagen_casilla_1.clear(
+                        aplicar_ratio_ctrl_u,
+                        inputs=mis_inputs,
+                        outputs=[aspect_ratios_selection],
+                        queue=False, show_progress=False
+                    )
+
+                    # Evento C: Al cambiar el tipo (poner/quitar CtrlnetUnion)
+                    radio_casilla_1.change(
+                        aplicar_ratio_ctrl_u,
+                        inputs=mis_inputs,
+                        outputs=[aspect_ratios_selection],
+                        queue=False, show_progress=False
+                    )
+
+                    # Evento D (¡EL NUEVO!): Al marcar o desmarcar el Checkbox de "Input Image"
+                    input_image_checkbox.change(
+                        aplicar_ratio_ctrl_u,
+                        inputs=mis_inputs,
+                        outputs=[aspect_ratios_selection],
+                        queue=False, show_progress=False
+                    )                                        
                     aspect_ratios_selection.change(lambda x: None, inputs=aspect_ratios_selection, queue=False, show_progress=False, _js='(x)=>{refresh_aspect_ratios_label(x);}')
                     shared.gradio_root.load(lambda x: None, inputs=aspect_ratios_selection, queue=False, show_progress=False, _js='(x)=>{refresh_aspect_ratios_label(x);}')
 
