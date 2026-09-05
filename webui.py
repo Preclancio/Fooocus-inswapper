@@ -510,8 +510,7 @@ with shared.gradio_root:
                                 type="numpy"
                             )
 
-            with gr.Row():
-                with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
+            with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
                     with gr.Row():
                         with gr.Column():
                             civitai_url = gr.Textbox(
@@ -544,6 +543,14 @@ with shared.gradio_root:
                                 import gdown
                             except ImportError:
                                 subprocess.call(["pip", "install", "gdown"])
+
+                        # Nueva función para asegurar que aria2 esté instalado en Colab
+                        def ensure_aria2():
+                            try:
+                                subprocess.run(["aria2c", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                            except (subprocess.CalledProcessError, FileNotFoundError):
+                                subprocess.call(["apt-get", "update"])
+                                subprocess.call(["apt-get", "install", "-y", "aria2"])
 
                         # Normalizar nombre del archivo
                         nombre_archivo = nombre_archivo.replace(" ", "_").replace("\n", ",")
@@ -597,33 +604,45 @@ with shared.gradio_root:
                                 enlace
                             ]
                                 
-
                         elif "huggingface.co" in enlace:
+                            # Implementación de aria2c para Hugging Face
+                            ensure_aria2()
                             cmd = [
-                                "wget", "-c", "--content-disposition", "-O", output_path, enlace
+                                "aria2c", 
+                                "--console-log-level=error", # Mantiene la consola limpia de spam
+                                "--summary-interval=5",      # Actualiza el progreso cada 5 segundos
+                                "-c",                        # Continúa la descarga si se interrumpe
+                                "-x", "16",                  # Usa 16 conexiones (máximo)
+                                "-s", "16",                  # Divide el archivo en 16 partes
+                                "-k", "1M",                  # Tamaño de los fragmentos
+                                "-d", folder,                # Directorio de destino
+                                "-o", nombre_archivo,        # Nombre del archivo final
+                                enlace
                             ]
 
                         else:
-                            return "Enlace no reconocido: solo se permiten Civitai, CivitaiArchive, Google Drive y Hugging Face."
+                            return "Enlace no reconocido: solo se permiten Civitai, CivitaiArchive, Tungsten, Google Drive y Hugging Face."
 
                         # Ejecución del comando de descarga
                         try:
+                            yield f"Iniciando descarga...\nDestino: {output_path}"
                             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
                             while True:
                                 line = process.stdout.readline()
                                 if not line:
                                     break
-                                yield line.strip()
+                                # Ignoramos líneas vacías para no saturar la caja de texto
+                                if line.strip():
+                                    yield line.strip()
 
                             process.wait()
                             if process.returncode == 0:
-                                yield f"Descarga completada: {output_path}"
+                                yield f"Descarga completada con éxito: {output_path}"
                             else:
-                                yield f"Error con código {process.returncode}"
+                                yield f"Error durante la descarga (Código {process.returncode})"
                         except Exception as e:
                             yield f"Excepción: {str(e)}"
-
 
                     download_button.click(
                         fn=descargar_modelo,
@@ -631,7 +650,6 @@ with shared.gradio_root:
                         outputs=[download_status],
                         show_progress=True
                     )
-
             with gr.Row(visible=modules.config.default_enhance_checkbox) as enhance_input_panel:
                 with gr.Tabs():
                     with gr.TabItem(label='Upscale or Variation'):
