@@ -520,32 +520,53 @@ with shared.gradio_root:
                             )
                             translate_button = gr.Button("Traducir Prompt a Inglés")
 
+# Variable global para mantener el modelo cargado en memoria
+                    traductor_local = None
+
                     def ejecutar_traduccion(habilitado, texto_actual):
-                        # Si el checkbox no está marcado o el prompt está vacío, devolvemos el texto original
+                        global traductor_local
+                        
+                        # Validaciones iniciales
                         if not habilitado:
                             return texto_actual
                         if not texto_actual or not texto_actual.strip():
                             return texto_actual
                             
-                        # Instalación automática de la librería en Colab si no existe
                         try:
-                            import deep_translator
-                        except ImportError:
-                            import subprocess
-                            subprocess.call(["pip", "install", "deep-translator"])
-                            import deep_translator
-                        
-                        from deep_translator import GoogleTranslator
-                        
-                        try:
-                            # source='auto' detecta el idioma, target='en' lo pasa a inglés
-                            traducido = GoogleTranslator(source='auto', target='en').translate(texto_actual)
-                            return traducido
+                            # Si el modelo no está cargado, lo instalamos y lo cargamos
+                            if traductor_local is None:
+                                print("🔄 Cargando traductor offline (descargará un modelo pequeño solo la primera vez)...")
+                                
+                                # Instalar librerías necesarias si no existen
+                                try:
+                                    import transformers
+                                    import sentencepiece
+                                except ImportError:
+                                    import subprocess
+                                    subprocess.call(["pip", "install", "transformers", "sentencepiece"])
+                                
+                                from transformers import pipeline
+                                
+                                # Descarga y carga el modelo local de Español -> Inglés
+                                traductor_local = pipeline("translation", model="Helsinki-NLP/opus-mt-es-en")
+                                print("✅ Traductor local cargado con éxito.")
+                            
+                            # Realiza la traducción de forma local sin usar internet
+                            resultado = traductor_local(texto_actual)[0]['translation_text']
+                            return resultado
+                            
                         except Exception as e:
-                            print(f"Error de traducción: {e}")
-                            # En caso de error (ej. sin internet), devolvemos el original
+                            print(f"❌ Error en la traducción local: {e}")
                             return texto_actual
 
+                    # Conectamos el botón con el textbox principal
+                    translate_button.click(
+                        fn=ejecutar_traduccion,
+                        inputs=[enable_translation, prompt],
+                        outputs=[prompt],
+                        show_progress=True
+                    )
+                    
                     # Conectamos el botón con el textbox principal llamado 'prompt'
                     translate_button.click(
                         fn=ejecutar_traduccion,
@@ -618,8 +639,9 @@ with shared.gradio_root:
                                 return "Enlace de Google Drive inválido."
 
                             file_id = match.group(1)
-                            cmd = ["gdown", "--no-cookies", "--id", file_id, "-O", output_path]
-
+                            import sys
+                            # Usamos sys.executable para garantizar que use el Python correcto y la URL directa sin --id
+                            cmd = [sys.executable, "-m", "gdown", f"https://drive.google.com/uc?id={file_id}", "-O", output_path]
                         elif "civitai.com" in enlace or "civitai.red" in enlace:
                             cmd = [
                                 "curl", "-L",
