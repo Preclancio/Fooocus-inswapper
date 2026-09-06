@@ -510,6 +510,49 @@ with shared.gradio_root:
                                 type="numpy"
                             )
 
+            with gr.Accordion(label="Traductor de Prompt", open=False):
+                    with gr.Row():
+                        with gr.Column():
+                            enable_translation = gr.Checkbox(
+                                label="Habilitar Traductor",
+                                value=False,
+                                info="Activa esta opción para permitir que el botón traduzca el prompt."
+                            )
+                            translate_button = gr.Button("Traducir Prompt a Inglés")
+
+                    def ejecutar_traduccion(habilitado, texto_actual):
+                        # Si el checkbox no está marcado o el prompt está vacío, devolvemos el texto original
+                        if not habilitado:
+                            return texto_actual
+                        if not texto_actual or not texto_actual.strip():
+                            return texto_actual
+                            
+                        # Instalación automática de la librería en Colab si no existe
+                        try:
+                            import deep_translator
+                        except ImportError:
+                            import subprocess
+                            subprocess.call(["pip", "install", "deep-translator"])
+                            import deep_translator
+                        
+                        from deep_translator import GoogleTranslator
+                        
+                        try:
+                            # source='auto' detecta el idioma, target='en' lo pasa a inglés
+                            traducido = GoogleTranslator(source='auto', target='en').translate(texto_actual)
+                            return traducido
+                        except Exception as e:
+                            print(f"Error de traducción: {e}")
+                            # En caso de error (ej. sin internet), devolvemos el original
+                            return texto_actual
+
+                    # Conectamos el botón con el textbox principal llamado 'prompt'
+                    translate_button.click(
+                        fn=ejecutar_traduccion,
+                        inputs=[enable_translation, prompt],
+                        outputs=[prompt],
+                        show_progress=True
+                    )                
             with gr.Accordion(label="Descargar modelos de Civitai / Google Drive / Huggingface", open=False):
                     with gr.Row():
                         with gr.Column():
