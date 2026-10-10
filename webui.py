@@ -198,7 +198,7 @@ with shared.gradio_root:
                             def aplicar_ratio_ctrl_u(image, current_type, is_image_prompt_active):
                                 # NUEVA REGLA: Si el checkbox de 'Input Image' está desmarcado,
                                 # O no hay imagen, O el tipo no es CtrlnetUnion -> volvemos al por defecto.
-                                if not is_image_prompt_active or image is None or current_type != flags.cn_ctrl_u:
+                                if not is_image_prompt_active or image is None or current_type not in [flags.cn_ctrl_u, flags.cn_cpds]:
                                     return gr.update(value=modules.config.default_aspect_ratio)
                                 
                                 # Si pasa todas las pruebas, calculamos
